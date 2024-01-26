@@ -71,7 +71,11 @@ app.get('/puppies/shepherds', async (req, res, next) => {
 
     // Your code here
     shepherds = await Puppy.findAll({
-        where: { breed: "%Shepherd"}
+        where: {
+            breed: {
+                [Op.like]: "%Shepherd"
+            }
+        }
     })
     res.json(shepherds);
 })
@@ -84,7 +88,17 @@ app.get('/puppies/tinybabies', async (req, res, next) => {
     let tinyBabyPuppies;
 
     // Your code here
-
+    tinyBabyPuppies = await Puppy.findAll({
+        where: {
+            ageYrs: {
+                [Op.lt]: 1
+            },
+            weightLbs: {
+                [Op.lt]: 20
+            }
+        },
+        order: [[ "ageYrs", "ASC" ], [ "weightLbs", "ASC" ]]
+    })
     res.json(tinyBabyPuppies);
 })
 
